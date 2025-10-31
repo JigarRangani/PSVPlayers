@@ -13,6 +13,8 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.media3.exoplayer.ExoPlayer
