@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -31,7 +32,7 @@ fun PermissionScreen(onPermissionGranted: () -> Unit) {
         permissionState.launchPermissionRequest()
     }
 
-    if (permissionState.hasPermission) {
+    if (permissionState.status.isGranted) {
         onPermissionGranted()
     } else {
         Column(
