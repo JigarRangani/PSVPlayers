@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jigar.psvplayer.data.VideoItem
 import com.jigar.psvplayer.data.VideoRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class VideoListUiState {
     object Loading : VideoListUiState()
@@ -14,10 +16,15 @@ sealed class VideoListUiState {
     object Empty : VideoListUiState()
 }
 
-class VideoListViewModel(private val repository: VideoRepository) : ViewModel() {
+@HiltViewModel
+class VideoListViewModel @Inject constructor(private val repository: VideoRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow<VideoListUiState>(VideoListUiState.Loading)
     val uiState: StateFlow<VideoListUiState> = _uiState
+
+    init {
+        loadVideos()
+    }
 
     fun loadVideos() {
         viewModelScope.launch {

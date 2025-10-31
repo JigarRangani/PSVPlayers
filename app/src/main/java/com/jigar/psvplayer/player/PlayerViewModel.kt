@@ -11,15 +11,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "playback_positions")
 
-class PlayerViewModel(
+@HiltViewModel
+class PlayerViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     val exoPlayer: ExoPlayer = ExoPlayer.Builder(context).build()

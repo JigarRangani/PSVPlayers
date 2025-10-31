@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,8 +27,9 @@ import com.jigar.psvplayer.ui.PlayerScreen
 import com.jigar.psvplayer.ui.VideoListScreen
 import com.jigar.psvplayer.ui.theme.PSVPlayerTheme
 import com.jigar.psvplayer.viewmodels.VideoListViewModel
-import com.jigar.psvplayer.viewmodels.VideoListViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +42,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "videoList") {
                         composable("videoList") {
-                            val viewModel: VideoListViewModel = viewModel(
-                                factory = VideoListViewModelFactory(VideoRepository(applicationContext))
-                            )
+                            val viewModel: VideoListViewModel = hiltViewModel()
                             VideoListScreen(
                                 viewModel = viewModel,
                                 onVideoClick = { video ->
@@ -53,11 +53,8 @@ class MainActivity : ComponentActivity() {
                         composable(
                             "player/{videoUri}",
                             arguments = listOf(navArgument("videoUri") { type = NavType.StringType })
-                        ) { backStackEntry ->
-                            val viewModel: PlayerViewModel = viewModel(
-                                factory = PlayerViewModelFactory(applicationContext),
-                                viewModelStoreOwner = backStackEntry
-                            )
+                        ) {
+                            val viewModel: PlayerViewModel = hiltViewModel()
                             PlayerScreen(viewModel = viewModel)
                         }
                     }

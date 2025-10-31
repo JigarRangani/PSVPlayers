@@ -15,12 +15,6 @@ import com.jigar.psvplayer.player.PlayerViewModel
 fun PlayerScreen(viewModel: PlayerViewModel) {
     val context = LocalContext.current
 
-    DisposableEffect(Unit) {
-        onDispose {
-            viewModel.exoPlayer.release()
-        }
-    }
-
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             factory = {
