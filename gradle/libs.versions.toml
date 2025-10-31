@@ -16,8 +16,10 @@ accompanistPermissions = "0.37.3"
 navigationCompose = "2.9.5"
 hilt = "2.51.1"
 androidxHilt = "1.2.0"
+material = "1.12.0"
 
 [libraries]
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHilt" }
