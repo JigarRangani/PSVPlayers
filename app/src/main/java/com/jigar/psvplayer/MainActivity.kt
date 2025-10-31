@@ -1,8 +1,12 @@
 package com.jigar.psvplayer
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.content.ContextCompat
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,6 +32,8 @@ import com.jigar.psvplayer.ui.VideoListScreen
 import com.jigar.psvplayer.ui.theme.PSVPlayerTheme
 import com.jigar.psvplayer.viewmodels.VideoListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,7 +42,21 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PSVPlayerTheme {
-                var permissionGranted by remember { mutableStateOf(false) }
+                var permissionGranted by remember {
+                    mutableStateOf(
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            ContextCompat.checkSelfPermission(
+                                this,
+                                Manifest.permission.READ_MEDIA_VIDEO
+                            ) == PackageManager.PERMISSION_GRANTED
+                        } else {
+                            ContextCompat.checkSelfPermission(
+                                this,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ) == PackageManager.PERMISSION_GRANTED
+                        }
+                    )
+                }
 
                 if (permissionGranted) {
                     val navController = rememberNavController()
@@ -46,7 +66,8 @@ class MainActivity : ComponentActivity() {
                             VideoListScreen(
                                 viewModel = viewModel,
                                 onVideoClick = { video ->
-                                    navController.navigate("player/${video.uri}")
+                                    val encodedUri = URLEncoder.encode(video.uri.toString(), StandardCharsets.UTF_8.toString())
+                                    navController.navigate("player/$encodedUri")
                                 }
                             )
                         }
