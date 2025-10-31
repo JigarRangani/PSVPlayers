@@ -28,10 +28,6 @@ fun PermissionScreen(onPermissionGranted: () -> Unit) {
         }
     )
 
-    LaunchedEffect(Unit) {
-        permissionState.launchPermissionRequest()
-    }
-
     if (permissionState.status.isGranted) {
         onPermissionGranted()
     } else {

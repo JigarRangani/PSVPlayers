@@ -16,6 +16,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "playback_positions")
@@ -27,7 +29,11 @@ class PlayerViewModel @Inject constructor(
 ) : ViewModel() {
 
     val exoPlayer: ExoPlayer = ExoPlayer.Builder(context).build()
-    private val videoUri by lazy { savedStateHandle.get<String>("videoUri") }
+    private val videoUri by lazy {
+        savedStateHandle.get<String>("videoUri")?.let {
+            URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
+        }
+    }
 
     init {
         viewModelScope.launch {
