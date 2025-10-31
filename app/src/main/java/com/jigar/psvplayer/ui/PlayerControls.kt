@@ -124,18 +124,6 @@ fun PlayerControls(player: ExoPlayer, modifier: Modifier = Modifier) {
                     )
                 }
             }
-            IconButton(onClick = { /* TODO: Implement subtitle selection */ }) {
-                Icon(
-                    imageVector = Icons.Default.Subtitles,
-                    contentDescription = "Subtitles"
-                )
-            }
-            IconButton(onClick = { /* TODO: Implement fullscreen toggle */ }) {
-                Icon(
-                    imageVector = Icons.Default.Fullscreen,
-                    contentDescription = "Fullscreen"
-                )
-            }
         }
     }
 }
